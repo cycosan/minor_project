@@ -20,10 +20,10 @@ ws.write(2, 2, xlwt.Formula("A3+B3"))
 
 wb.save('example.xls')
 '''
-def output(filename, sheet,num, name, present):
-    my_file = Path('firebase/attendance_files/'+filename+str(datetime.now().date())+'.xls');
+def output(filename, sheet,num, classe, name, present):
+    my_file = Path('firebase/attendance_files/'+classe+filename+str(datetime.now().date())+'.xls');
     if my_file.is_file():
-        rb = open_workbook('firebase/attendance_files/'+filename+str(datetime.now().date())+'.xls');
+        rb = open_workbook('firebase/attendance_files/'+classe+filename+str(datetime.now().date())+'.xls');
         book = copy(rb);
         sh = book.get_sheet(0)
         # file exists
@@ -44,15 +44,24 @@ def output(filename, sheet,num, name, present):
     col0_name = 'Id'
     col1_name = 'Name'
     col2_name = 'Present'
+    col3_name = 'Batch'
+    col4_name ='Sec'
 
     sh.write(1, 0, col0_name, style0);
     sh.write(1,1,col1_name,style0);
     sh.write(1, 2, col2_name,style0);
+    sh.write(1, 3, col3_name, style0);
+    sh.write(1, 4, col4_name, style0);
     sh.write(num+1,0,num);
     sh.write(num+1,1,name);
     sh.write(num+1, 2, present);
+    s=classe.split("-")
+    sh.write(num+1,3,s[0]+s[1])
+    sh.write(num+1,4,s[2])
+
+
     #You may need to group the variables together
     #for n, (v_desc, v) in enumerate(zip(desc, variables)):
     fullname=filename+str(datetime.now().date())+'.xls';
-    book.save('firebase/attendance_files/'+fullname)
-    return fullname;
+    book.save('firebase/attendance_files/'+classe+fullname)
+
